@@ -370,11 +370,6 @@
       "count": 1
     }
   },
-  "client/src/components/Chat/Subagents/SubagentThreadPanel.tsx": {
-    "shadcn/no-restyle": {
-      "count": 7
-    }
-  },
   "client/src/components/Chat/Trace/Button.tsx": {
     "shadcn/no-restyle": {
       "count": 3
@@ -1382,6 +1377,11 @@
   "packages/chat/src/components/subagents/conversation.tsx": {
     "shadcn/require-static-classes": {
       "count": 1
+    }
+  },
+  "packages/chat/src/components/subagents/panel.tsx": {
+    "shadcn/no-restyle": {
+      "count": 7
     }
   },
   "packages/chat/src/components/subagents/shared.tsx": {
