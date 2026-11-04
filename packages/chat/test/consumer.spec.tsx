@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { readFileSync } from 'node:fs';
 import { Chat } from '@librechat/chat';
 import { createInstance } from 'i18next';
 import { ContentTypes, EModelEndpoint } from 'librechat-data-provider';
@@ -12,6 +13,9 @@ import {
   MessageRow,
   MentionPopover,
   ChatScreen,
+  RemoveFile,
+  ElapsedTimer,
+  SystemEventHeader,
   HoverButtons,
   MessagesView,
   SiblingSwitch,
@@ -702,5 +706,49 @@ describe('a consumer rendering subagent activity', () => {
     const older = screen.getByRole('group', { name: 'Assistant' });
     expect(older).toHaveTextContent('First');
     expect(within(older).getByRole('status')).toHaveTextContent('1 / 2');
+  });
+});
+
+describe('a consumer styled by the published stylesheet alone', () => {
+  const i18n = createInstance();
+  void i18n.use(initReactI18next).init({ lng: 'en', resources: { en: { translation: {} } } });
+
+  /** What `@librechat/client/style.css` declares for an element's own classes. jsdom cannot load
+   *  the whole file (`@layer`, `:dir()`), so the rendered class list is matched by hand. */
+  const stylesheet = readFileSync(require.resolve('@librechat/client/style.css'), 'utf8');
+  const declaredFor = (element: Element): string =>
+    Array.from(stylesheet.matchAll(/([^{}]+)\{([^{}]*)\}/g))
+      .filter(([, selectors]) =>
+        selectors
+          .split(',')
+          .some((selector) =>
+            Array.from(element.classList).some((name) => selector.trim() === `.${name}`),
+          ),
+      )
+      .map(([, , declarations]) => declarations)
+      .join('');
+
+  it('sizes icons, sets the status row type and sweeps in-flight labels', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <SystemEventHeader icon={null} label="Woke up" />
+        <ElapsedTimer start={Date.now()} />
+        <RemoveFile onRemove={() => undefined} label="Remove report.pdf" />
+      </I18nextProvider>,
+    );
+
+    expect(declaredFor(screen.getByText('Woke up'))).toMatch(
+      /font-size:[^;]*--markdown-font-size[^;]*;\s*line-height:[^;]*--markdown-font-size/,
+    );
+
+    expect(declaredFor(screen.getByTestId('stream-elapsed'))).toMatch(/animation:[^;]*\bshimmer\b/);
+    expect(stylesheet).toMatch(/@keyframes shimmer\s*\{/);
+    expect(stylesheet).toMatch(/@keyframes shimmer-rtl\s*\{/);
+    expect(stylesheet).toMatch(/html\.high-contrast\s*\{[^}]*--shimmer-dip-alpha: 1/);
+
+    const icon = screen.getByRole('button', { name: 'Remove report.pdf' }).querySelector('svg');
+    const iconRule = declaredFor(icon as SVGElement);
+    expect(iconRule).toContain('width: 1rem');
+    expect(iconRule).toContain('height: 1rem');
   });
 });
