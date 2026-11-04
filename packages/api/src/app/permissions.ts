@@ -46,6 +46,8 @@ function hasExplicitConfig(
       return interfaceConfig?.fileSearch !== undefined;
     case PermissionTypes.FILE_CITATIONS:
       return interfaceConfig?.fileCitations !== undefined;
+    case PermissionTypes.USAGE:
+      return interfaceConfig?.usage !== undefined;
     case PermissionTypes.MCP_SERVERS:
       return interfaceConfig?.mcpServers !== undefined;
     case PermissionTypes.REMOTE_AGENTS:
@@ -464,6 +466,13 @@ export async function updateInterfacePermissions({
           loadedInterface.fileSearch,
           defaultPerms[PermissionTypes.FILE_SEARCH]?.[Permissions.USE],
           defaults.fileSearch,
+        ),
+      },
+      [PermissionTypes.USAGE]: {
+        [Permissions.USE]: getPermissionValue(
+          loadedInterface.usage,
+          defaultPerms[PermissionTypes.USAGE]?.[Permissions.USE],
+          defaults.usage,
         ),
       },
       [PermissionTypes.FILE_CITATIONS]: {

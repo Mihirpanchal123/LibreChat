@@ -557,6 +557,11 @@ export const skillFile = (id: string, relativePath: string) =>
 export const insights = () => `${BASE_URL}/api/insights`;
 export const insightsAccess = () => `${insights()}/access`;
 
+export const usage = () => `${BASE_URL}/api/usage`;
+export const usageAccess = () => `${usage()}/access`;
+export const myUsage = () => `${usage()}/me`;
+export const userUsage = (userId: string) => `${usage()}/users/${encodeURIComponent(userId)}`;
+
 /* Conversation traces */
 export const conversationTrace = (conversationId: string) =>
   `${BASE_URL}/api/traces/${encodeURIComponent(conversationId)}`;

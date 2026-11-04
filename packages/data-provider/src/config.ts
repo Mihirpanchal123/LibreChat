@@ -3223,6 +3223,8 @@ export const interfaceSchema = z
       .optional(),
     fileSearch: z.boolean().optional(),
     fileCitations: z.boolean().optional(),
+    /** Seeds the USAGE role permission: whether users can see their own token usage. */
+    usage: z.boolean().optional(),
     traceViewer: traceViewerSchema.optional(),
     /** Tool keys (and `'mcp'` or an MCP server name) pinned to the prompt bar by default */
     defaultPinnedTools: z.array(z.string()).optional(),
@@ -3450,6 +3452,7 @@ export const interfaceSchema = z
     },
     fileSearch: true,
     fileCitations: true,
+    usage: true,
     buildInfo: true,
     mascot: true,
     landingHeading: 'entity',

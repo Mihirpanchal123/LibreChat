@@ -1,15 +1,25 @@
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import { BarChart3, MessagesSquare } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { BarChart3, Gauge, MessagesSquare } from 'lucide-react';
 import { useUserKeyQuery } from 'librechat-data-provider/react-query';
-import { getConfigDefaults, getEndpointField } from 'librechat-data-provider';
+import {
+  Permissions,
+  PermissionTypes,
+  getConfigDefaults,
+  getEndpointField,
+} from 'librechat-data-provider';
 import type { TEndpointsConfig } from 'librechat-data-provider';
 import type { NavLink } from '~/common';
-import { useGetEndpointsQuery, useGetStartupConfig, useInsightsAccessQuery } from '~/data-provider';
+import {
+  useUsageAccessQuery,
+  useGetStartupConfig,
+  useGetEndpointsQuery,
+  useInsightsAccessQuery,
+} from '~/data-provider';
 import ConversationsSection from '~/components/UnifiedSidebar/ConversationsSection';
 import useSideNavLinks from '~/hooks/Nav/useSideNavLinks';
-import { useAuthContext } from '~/hooks';
+import { useAuthContext, useHasAccess } from '~/hooks';
 import store from '~/store';
 
 const defaultInterface = getConfigDefaults().interface;
@@ -36,6 +46,15 @@ export default function useUnifiedSidebarLinks() {
       enabled: !!user && insightsFeatureEnabled && !isInsightsRoute,
     },
   );
+  const hasOwnUsageAccess = useHasAccess({
+    permissionType: PermissionTypes.USAGE,
+    permission: Permissions.USE,
+  });
+  /** Only asked when the role hides one's own usage: `read:usage` still opens the all-users view. */
+  const { data: usageAccess } = useUsageAccessQuery(user?.id, {
+    enabled: !!user && !hasOwnUsageAccess,
+  });
+  const showUsageLink = !!user && (hasOwnUsageAccess || usageAccess?.access === true);
 
   const endpointType = useMemo(
     () => getEndpointField(endpointsConfig, endpoint, 'type'),
@@ -72,28 +91,44 @@ export default function useUnifiedSidebarLinks() {
       Component: ConversationsSection,
     };
 
+    const dashboardLinks: NavLink[] = [];
     if (
-      !insightsFeatureEnabled ||
-      (!isInsightsRoute && !isInsightsAccessLoading && insightsAccess?.access !== true)
+      insightsFeatureEnabled &&
+      (isInsightsRoute || isInsightsAccessLoading || insightsAccess?.access === true)
     ) {
-      return [conversationLink, ...sideNavLinks];
+      dashboardLinks.push({
+        title: 'com_insights_navigation',
+        label: '',
+        icon: BarChart3,
+        id: 'insights',
+        disabled: !isInsightsRoute && isInsightsAccessLoading,
+        onClick: () => {
+          if (!location.pathname.startsWith('/insights')) {
+            navigate('/insights');
+          }
+        },
+      });
+    }
+    if (showUsageLink) {
+      dashboardLinks.push({
+        title: 'com_usage_navigation',
+        label: '',
+        icon: Gauge,
+        id: 'usage',
+        onClick: () => {
+          if (!location.pathname.startsWith('/usage')) {
+            navigate('/usage');
+          }
+        },
+      });
     }
 
-    const insightsLink: NavLink = {
-      title: 'com_insights_navigation',
-      label: '',
-      icon: BarChart3,
-      id: 'insights',
-      disabled: !isInsightsRoute && isInsightsAccessLoading,
-      onClick: () => {
-        if (!location.pathname.startsWith('/insights')) {
-          navigate('/insights');
-        }
-      },
-    };
+    if (dashboardLinks.length === 0) {
+      return [conversationLink, ...sideNavLinks];
+    }
     const mcpIndex = sideNavLinks.findIndex((link) => link.id === 'mcp-builder');
     const nextLinks = [...sideNavLinks];
-    nextLinks.splice(mcpIndex >= 0 ? mcpIndex + 1 : nextLinks.length, 0, insightsLink);
+    nextLinks.splice(mcpIndex >= 0 ? mcpIndex + 1 : nextLinks.length, 0, ...dashboardLinks);
 
     return [conversationLink, ...nextLinks];
   }, [
@@ -103,6 +138,7 @@ export default function useUnifiedSidebarLinks() {
     isInsightsRoute,
     location.pathname,
     navigate,
+    showUsageLink,
     sideNavLinks,
   ]);
 

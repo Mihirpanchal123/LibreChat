@@ -100,6 +100,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -163,6 +164,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -320,6 +322,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: false },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: false },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -383,6 +386,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: false },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: false },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -496,6 +500,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: false,
@@ -559,6 +564,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -685,6 +691,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: false },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: false,
@@ -748,6 +755,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: false },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -861,6 +869,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: false,
@@ -924,6 +933,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -1042,6 +1052,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: false,
@@ -1093,6 +1104,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
@@ -1228,6 +1240,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: false,
@@ -1283,6 +1296,7 @@ describe('updateInterfacePermissions - permissions', () => {
       },
       [PermissionTypes.FILE_SEARCH]: { [Permissions.USE]: true },
       [PermissionTypes.FILE_CITATIONS]: { [Permissions.USE]: true },
+      [PermissionTypes.USAGE]: { [Permissions.USE]: true },
       [PermissionTypes.MCP_SERVERS]: {
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,

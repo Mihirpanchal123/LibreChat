@@ -72,6 +72,10 @@ export enum PermissionTypes {
    * Type for Scheduled Chats Permissions
    */
   SCHEDULES = 'SCHEDULES',
+  /**
+   * Type for viewing one's own token usage
+   */
+  USAGE = 'USAGE',
 }
 
 /**
@@ -97,6 +101,7 @@ export const PERMISSION_TYPE_INTERFACE_FIELDS: Record<PermissionTypes, string> =
   [PermissionTypes.SKILLS]: 'skills',
   [PermissionTypes.SHARED_LINKS]: 'sharedLinks',
   [PermissionTypes.SCHEDULES]: 'schedules',
+  [PermissionTypes.USAGE]: 'usage',
 };
 
 /** Set of interface config field names that correspond to role permissions. */
@@ -234,6 +239,11 @@ export const fileCitationsPermissionsSchema = z.object({
 });
 export type TFileCitationsPermissions = z.infer<typeof fileCitationsPermissionsSchema>;
 
+export const usagePermissionsSchema = z.object({
+  [Permissions.USE]: z.boolean().default(true),
+});
+export type TUsagePermissions = z.infer<typeof usagePermissionsSchema>;
+
 export const mcpServersPermissionsSchema = z.object({
   [Permissions.USE]: z.boolean().default(true),
   [Permissions.CREATE]: z.boolean().default(true),
@@ -291,4 +301,5 @@ export const permissionsSchema = z.object({
   [PermissionTypes.SKILLS]: skillPermissionsSchema,
   [PermissionTypes.SHARED_LINKS]: sharedLinksPermissionsSchema,
   [PermissionTypes.SCHEDULES]: schedulesPermissionsSchema,
+  [PermissionTypes.USAGE]: usagePermissionsSchema,
 });

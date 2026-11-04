@@ -80,6 +80,9 @@ export interface IRole extends Document {
       [Permissions.USE]?: boolean;
       [Permissions.CREATE]?: boolean;
     };
+    [PermissionTypes.USAGE]?: {
+      [Permissions.USE]?: boolean;
+    };
   };
   tenantId?: string;
 }

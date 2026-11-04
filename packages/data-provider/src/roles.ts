@@ -19,6 +19,7 @@ import {
   remoteAgentsPermissionsSchema,
   temporaryChatPermissionsSchema,
   fileCitationsPermissionsSchema,
+  usagePermissionsSchema,
 } from './permissions';
 
 /**
@@ -122,6 +123,9 @@ const defaultRolesSchema = z.object({
         [Permissions.USE]: z.boolean().default(true),
         [Permissions.CREATE]: z.boolean().default(true),
       }),
+      [PermissionTypes.USAGE]: usagePermissionsSchema.extend({
+        [Permissions.USE]: z.boolean().default(true),
+      }),
     }),
   }),
   [SystemRoles.USER]: roleSchema.extend({
@@ -220,6 +224,9 @@ export const roleDefaults = defaultRolesSchema.parse({
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
       },
+      [PermissionTypes.USAGE]: {
+        [Permissions.USE]: true,
+      },
     },
   },
   [SystemRoles.USER]: {
@@ -281,6 +288,7 @@ export const roleDefaults = defaultRolesSchema.parse({
         [Permissions.USE]: true,
         [Permissions.CREATE]: true,
       },
+      [PermissionTypes.USAGE]: {},
     },
   },
 });

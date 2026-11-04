@@ -6,6 +6,12 @@ import type {
   TTraceRecordParams,
   TTraceRecordDetail,
 } from './types/traces';
+import type {
+  TUsageParams,
+  TUsageResponse,
+  TUserUsageResponse,
+  TUsageAccessResponse,
+} from './types/usage';
 import type { TInsightsAccessResponse, TInsightsParams, TInsightsResponse } from './types/insights';
 import type { ScheduleMCPConsentView, ConfirmScheduleMCPConsent } from './types/scheduleConsent';
 import type { CodeSetupAttempt, CodeSetupApprovalRequest } from './codeSetup';
@@ -47,6 +53,36 @@ export function getInsights(params: TInsightsParams = {}): Promise<TInsightsResp
 
 export function getInsightsAccess(): Promise<TInsightsAccessResponse> {
   return request.get(endpoints.insightsAccess());
+}
+
+function usageQuery(params: Record<string, string | number | undefined>): string {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== '') {
+      query.set(key, String(value));
+    }
+  }
+  const suffix = query.toString();
+  return suffix ? `?${suffix}` : '';
+}
+
+export function getUsage(params: TUsageParams = {}): Promise<TUsageResponse> {
+  return request.get(`${endpoints.usage()}${usageQuery(params)}`);
+}
+
+export function getUsageAccess(): Promise<TUsageAccessResponse> {
+  return request.get(endpoints.usageAccess());
+}
+
+export function getUserUsage(
+  userId: string,
+  params: Pick<TUsageParams, 'range'> = {},
+): Promise<TUserUsageResponse> {
+  return request.get(`${endpoints.userUsage(userId)}${usageQuery(params)}`);
+}
+
+export function getMyUsage(params: Pick<TUsageParams, 'range'> = {}): Promise<TUserUsageResponse> {
+  return request.get(`${endpoints.myUsage()}${usageQuery(params)}`);
 }
 
 export function getConversationTraceAvailability(

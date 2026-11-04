@@ -26,6 +26,7 @@ import { ChatFormProvider, ActivePanelProvider } from '~/Providers';
 import useSidebarToggle from '~/hooks/Nav/useSidebarToggle';
 import useSidebarState from '~/hooks/Nav/useSidebarState';
 import SidePanelNav from '~/components/SidePanel/Nav';
+import { getDashboardRouteId } from '~/utils/routes';
 import { createResizeMeasure } from './resize';
 import { useLocalize } from '~/hooks';
 import Sidebar from './Sidebar';
@@ -75,8 +76,9 @@ function UnifiedSidebar({
   const resizeHandlers = useRef<{ move: (e: MouseEvent) => void; up: () => void } | null>(null);
 
   const links = useUnifiedSidebarLinks();
-  const isInsightsRoute = location.pathname.startsWith('/insights');
-  const panelExpanded = expanded && !isInsightsRoute;
+  const dashboardRouteId = getDashboardRouteId(location.pathname);
+  const isDashboardRoute = dashboardRouteId != null;
+  const panelExpanded = expanded && !isDashboardRoute;
 
   /** The aside's max width is a viewport percentage, so the announced range has to track
    *  the viewport rather than a render-time snapshot of it. */
@@ -109,11 +111,11 @@ function UnifiedSidebar({
   }, [navigate]);
 
   const handlePanelExpand = useCallback(() => {
-    if (isInsightsRoute) {
+    if (isDashboardRoute) {
       handleLeaveInsights();
     }
     handleExpand();
-  }, [handleExpand, handleLeaveInsights, isInsightsRoute]);
+  }, [handleExpand, handleLeaveInsights, isDashboardRoute]);
 
   const handleResizeStart = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
@@ -265,7 +267,7 @@ function UnifiedSidebar({
             onNewChat={handleCollapse}
             switchToHistory={switchToHistory}
             onLeaveInsights={handleLeaveInsights}
-            routeActiveId={isInsightsRoute ? 'insights' : undefined}
+            routeActiveId={dashboardRouteId}
           />
           {/* Above the panel rather than inside it: the marketplace is a
               destination like the panels themselves, not a row of whichever
@@ -280,7 +282,7 @@ function UnifiedSidebar({
           <MobileShortcutTargets
             links={links}
             onLeaveInsights={handleLeaveInsights}
-            routeActiveId={isInsightsRoute ? 'insights' : undefined}
+            routeActiveId={dashboardRouteId}
           />
           <MobileBottomBar links={links} />
         </ActivePanelProvider>
