@@ -184,3 +184,17 @@ test('selecting a model waits for its catalog and closes the picker before compo
     await catalogs.dispose();
   }
 });
+
+test('the endpoint selection helper commits model specs without looking for a submenu', async ({
+  page,
+}) => {
+  await page.goto(`${NEW_CHAT_PATH}?spec=e2e-soft-default`);
+  for (const endpoint of [
+    { label: 'Mock Provider A', model: 'mock-model-a' },
+    { label: 'Mock Provider B', model: 'mock-model-b' },
+  ]) {
+    await selectMockEndpoint(page, endpoint);
+    await expect(trigger(page)).toContainText(endpoint.label);
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
+  }
+});
